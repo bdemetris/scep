@@ -173,6 +173,9 @@ func (svc *service) PKIOperation(ctx context.Context, data []byte) ([]byte, erro
 		return nil, err
 	}
 
+	// DEBUG
+	fmt.Println("pki operation returned")
+
 	return certRep.Raw, nil
 }
 

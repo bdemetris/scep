@@ -155,6 +155,8 @@ func (svc *service) PKIOperation(ctx context.Context, data []byte) ([]byte, erro
 	crt := certRep.CertRepMessage.Certificate
 	name := certName(crt)
 
+	// DEBUG
+	log.Println("will check for CN in depot")
 	// Test if this certificate is already in the CADB, revoke if needed
 	// revocation is done if the validity of the existing certificate is
 	// less than allowRenewal (14 days by default)
@@ -162,6 +164,9 @@ func (svc *service) PKIOperation(ctx context.Context, data []byte) ([]byte, erro
 	if err != nil {
 		return nil, err
 	}
+
+	// DEBUG
+	log.Println("storing cert")
 
 	if err := svc.depot.Put(name, crt); err != nil {
 		return nil, err

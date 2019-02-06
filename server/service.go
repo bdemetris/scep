@@ -8,6 +8,7 @@ import (
 	"crypto/x509"
 	"encoding/asn1"
 	"errors"
+	"fmt"
 	"math/big"
 	"time"
 
@@ -156,7 +157,7 @@ func (svc *service) PKIOperation(ctx context.Context, data []byte) ([]byte, erro
 	name := certName(crt)
 
 	// DEBUG
-	svc.debugLogger.Log("will check for CN in depot")
+	fmt.Println("will check for CN in depot")
 	// Test if this certificate is already in the CADB, revoke if needed
 	// revocation is done if the validity of the existing certificate is
 	// less than allowRenewal (14 days by default)
@@ -166,7 +167,7 @@ func (svc *service) PKIOperation(ctx context.Context, data []byte) ([]byte, erro
 	}
 
 	// DEBUG
-	svc.debugLogger.Log("storing cert")
+	fmt.Println("storing cert")
 
 	if err := svc.depot.Put(name, crt); err != nil {
 		return nil, err

@@ -24,10 +24,10 @@ import (
 	"github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
 	"github.com/micromdm/scep/csrverifier"
-	"github.com/micromdm/scep/csrverifier/executable"
+	executablecsrverifier "github.com/micromdm/scep/csrverifier/executable"
 	"github.com/micromdm/scep/depot"
 	"github.com/micromdm/scep/depot/file"
-	"github.com/micromdm/scep/server"
+	scepserver "github.com/micromdm/scep/server"
 )
 
 // version info
@@ -53,7 +53,7 @@ func main() {
 		flPort              = flag.String("port", envString("SCEP_HTTP_LISTEN_PORT", "8080"), "port to listen on")
 		flDepotPath         = flag.String("depot", envString("SCEP_FILE_DEPOT", "depot"), "path to ca folder")
 		flCAPass            = flag.String("capass", envString("SCEP_CA_PASS", ""), "passwd for the ca.key")
-		flClDuration        = flag.String("crtvalid", envString("SCEP_CERT_VALID", "365"), "validity for new client certificates in days")
+		flClDuration        = flag.String("crtvalid", envString("SCEP_CERT_VALID", "14"), "validity for new client certificates in days")
 		flClAllowRenewal    = flag.String("allowrenew", envString("SCEP_CERT_RENEW", "14"), "do not allow renewal until n days before expiry, set to 0 to always allow")
 		flChallengePassword = flag.String("challenge", envString("SCEP_CHALLENGE_PASSWORD", ""), "enforce a challenge password")
 		flCSRVerifierExec   = flag.String("csrverifierexec", envString("SCEP_CSR_VERIFIER_EXEC", ""), "will be passed the CSRs for verification")
@@ -255,7 +255,7 @@ func createCertificateAuthority(key *rsa.PrivateKey, years int, organization str
 
 			// activate CA
 			BasicConstraintsValid: true,
-			IsCA: true,
+			IsCA:                  true,
 			// Not allow any non-self-issued intermediate CA
 			MaxPathLen: 0,
 
